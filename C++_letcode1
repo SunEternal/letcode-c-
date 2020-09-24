@@ -1,0 +1,60 @@
+#重新学习C++
+第一题，两数之和
+给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
+你可以假设每种输入只会对应一个答案。但是，数组中同一个元素不能使用两遍。
+示例:
+给定 nums = [2, 7, 11, 15], target = 9
+因为 nums[0] + nums[1] = 2 + 7 = 9
+所以返回 [0, 1]
+
+
+#知识点总结，之前没有学习stl知识，所以这里先熟悉一些容器，边刷题，边总结
+#一.map函数，map函数其实就是python当中的字典，这个很好理解，主要的用法如下：
+  1.头文件#include <map>
+  2.定义：map<int, string> mapStudent;
+  3.插入元素“三种方法”：
+    mapStudent.insert(pair<int, string>(000, "student_zero"));
+    mapStudent.insert(map<int, string>::value_type(001, "student_one"));
+    mapStudent[123] = "student_first";
+    #注：第三种方法是替代，前两种不会替代。
+  4.查找元素，即用键查找值，.find()：
+    mapStudent.find("123")
+  5.删除元素
+    mapStudent.erase("")
+    或者直接删除一个某一个键值对
+  6.大小：
+    mapStudent.size()
+  7.其他用法：
+    empty()         如果map为空则返回true
+    clear(）        删除所有元素
+    max_size()      返回可以容纳的最大元素个数
+    swap()           交换两个map
+    upper_bound()    返回键值>给定元素的第一个位置
+    begin()         返回指向map头部的迭代器
+    count()         返回指定元素出现的次数
+   
+#本题思路
+
+首先，可以考虑到的一个方法，是双指针的法或者是两层循环暴力破解法，但是这样做，严重拉低了效率。
+本题目，参考解题思路，用到了map这个一用法。由于map的count()这一方法，我们可以使用count，来减少一层循环
+具体代码与思路如下：
+定义一个map,键与值都为int类型，定义一个向量b存放结果
+map<int,int> a;
+vector b(2,-1)
+使用向量nums，用map这个字典，将nums保存好，便于之后的操作
+注意，这里的迭代，使用的是与nums当中的反向保存，这个是一个很有趣的思路。如果只是将nums当中的位置和值简单的赋值到对应的键与值上，是无法使用map当中的count函数的，
+因此，需要反向键值，即，nums的顺序，应该作为值，而nums的值应该作为键
+for (int i=0;i<nums.size();i++)
+{
+  a.insert(map<int,int>::value_type(nums[i],i))
+};
+循环一波，找到两个相加为target的点
+for (int i=0;i<nums.size();i++){
+    if a.count(target-nums[i])>0 && a[target-nums[i]]!=i
+    {
+      b[0]=i;
+      b[1]=a[target-nums[i]];
+    };
+};
+return 0
+
